@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 from flask import render_template, request, Blueprint, jsonify
 from flask_babel import _
@@ -43,6 +44,7 @@ def edit_item(item_id):
     if data is None or data['body'].strip() == '':
         return jsonify(message=_('Invalid item body.')), 400
     item.body = data['body']
+    item.datatime = datetime.now()
     db.session.commit()
     return jsonify(message=_('Item updated.'))
 
@@ -54,6 +56,11 @@ def toggle_item(item_id):
     if current_user != item.author:
         return jsonify(message=_('Permission denied.')), 403
 
+    if item.done:
+        item.datatime = datetime.now()
+        item.endtime = None
+    else:
+        item.endtime = datetime.now()
     item.done = not item.done
     db.session.commit()
     return jsonify(message=_('Item toggled.'))

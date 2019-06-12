@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-
+from _datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
 from todoism.extensions import db
 
 
@@ -23,6 +22,9 @@ class User(db.Model, UserMixin):
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
+    datatime = db.Column(db.DateTime, default=datetime.now())
+    endtime = db.Column(db.DateTime, default=None)
     done = db.Column(db.Boolean, default=False)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     author = db.relationship('User', back_populates='items')
+

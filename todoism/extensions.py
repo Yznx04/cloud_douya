@@ -3,12 +3,14 @@
 from flask import request, current_app
 from flask_babel import Babel, lazy_gettext as _l
 from flask_login import LoginManager, current_user
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 
 db = SQLAlchemy()
 csrf = CSRFProtect()
 babel = Babel()
+migrate = Migrate()
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
